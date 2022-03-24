@@ -33,7 +33,7 @@ import plot_utils
 #p_thWDM_d = p_m_hm*3E8/(3.3/3.33*(m_hm/3E8)**(-1/3.33-1))
 def const_thWDM_hm(case):
     if case=="no_baryons":
-        const = 3.01639E8
+        const = 3.03791E8
     elif case == "include_baryons":
         const = 3.80877E8
     else:
