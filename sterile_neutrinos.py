@@ -66,9 +66,10 @@ def run_sn_all_cases(m_hm,p_m_hm,poly_dict_thWDM_to_sn, degree=2):
     sn_lower_limit_list = []
     for case_index in range(len(case_list)):
         case  = case_list[case_index]
-        print("Calculating case", case)
 
         label=label_list[case_index]
+        print("Calculating ",label," ", case)
+
         print("Calculating the thWDM posterior")
         m_thWDM_lower_limit, m_thWDM_upper_limit, m_thWDM , p_thWDM = th.calculate_thWDM(m_hm,p_m_hm,case)
         print("Calculating the sn posterior")
@@ -250,7 +251,11 @@ def plot_all_sn_panels(m_hm,p_m_hm,t1,t2, paper_plot=False):
     poly_dict_thWDM_to_sn2, poly_dict_sn_to_thWDM1 =t2.fit_polynomials()
 
     set_labels = ["PK","KTY"]
+    print("----------")
+    print("PK")
     m_sn_list1, p_sn_list1, sn_lower_limit_list1 = run_sn_all_cases(m_hm,p_m_hm,poly_dict_thWDM_to_sn1)
+    print("----------")
+    print("KTY")
     m_sn_list2, p_sn_list2, sn_lower_limit_list2= run_sn_all_cases(m_hm,p_m_hm,poly_dict_thWDM_to_sn2)
     
     
@@ -273,11 +278,14 @@ def plot_all_sn_panels(m_hm,p_m_hm,t1,t2, paper_plot=False):
     ax[1,0].plot(m_sn_list2[1], p_sn_list2[1],color=color_dict["cb_light_pink"],label="KTY-II")
     ax[1,0].axvline(x=sn_lower_limit_list2[1], color=color_dict["cb_light_pink"],linestyle='--')
 
-
+    print("----------")
+    print("DW")
   
     for i in range(2):
         case = case_list[i]
         label=label_list[i]
+        print("Calculating ",label," ", case)
+
         color = color_list[i]
         
         m_thWDM_lower_limit, m_thWDM_upper_limit, m_thWDM , p_thWDM = th.calculate_thWDM(m_hm,p_m_hm,case)

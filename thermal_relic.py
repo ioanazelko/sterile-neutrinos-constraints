@@ -75,7 +75,7 @@ def plot_thWDM(m_hm,p_m_hm):
         case  = case_list[case_index]
         color = color_list[case_index]
         label=label_list[case_index]
-        print("Thermal relic WDM, for case ", label," ", case)
+        print("Thermal relic WDM, for ", label," ", case)
         
         m_thWDM_lower_limit, m_thWDM_upper_limit, m_thWDM , p_thWDM = calculate_thWDM(m_hm,p_m_hm,case)
         ax.plot(m_thWDM, p_thWDM, color=color, label=label)
