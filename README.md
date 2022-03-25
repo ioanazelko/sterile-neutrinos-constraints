@@ -31,3 +31,5 @@ The Mathematica folder contains the mathematica notebook that shows how the rela
 The strong_lensing_data folder contains the pickled python function that returns the 2D likelihood function from [Gilman et al. 2020](https://ui.adsabs.harvard.edu/abs/2020MNRAS.491.6077G/abstract) used in the analysis; the python file strong_lensing_data_processing.py contains the functions to process this.
 
 the transfer_function folder contains the transfer functions for the Higgs decay model from [Petraki & Kusenko 2008 (PK)](https://ui.adsabs.harvard.edu/abs/2008PhRvD..77f5014P/abstract) and the GUT scale scenario from [Kusenko et al 2010 (KTY)](https://ui.adsabs.harvard.edu/abs/2010PhLB..693..144K/abstract), as obtained by [Abazajian & Kusenko 2019](https://arxiv.org/abs/1907.11696). The python script transfer_functions.py has the functions to process these.
+
+The other data used in the paper are taken directly from their respective papers.
