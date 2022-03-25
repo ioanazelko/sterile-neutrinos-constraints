@@ -16,8 +16,8 @@ I made the code with python version 3.8.5, and hopefully it should work with oth
 ### System environment variables
 You will have to set two environment variables in your operating system:
 
-DARK_MATTER_PAPER_LOCATION - a path to where you would like the paper plots and tables to be saved by the scripts
-DARK_MATTER_CODE_LOCATION - a path to the directory where you downloaded the code for thir project
+DARK_MATTER_PAPER_LOCATION - a path to where you would like the paper plots and tables to be saved by the scripts.
+DARK_MATTER_CODE_LOCATION - a path to the directory where you downloaded the code for this project.
 
 This [guide](https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html) explains how to set environment variables in Windows, MacOS, Linux.
 
