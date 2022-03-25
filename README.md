@@ -19,8 +19,8 @@ You will have to set two environment variables in your operating system:
 DARK_MATTER_PAPER_LOCATION - a path to where you would like the paper plots and tables to be saved by the scripts
 DARK_MATTER_CODE_LOCATION - a path to the directory where you downloaded the code for thir project
 
-This is a guide explaining how to set environment variables in Windows, MacOS, Linux
-https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html
+This [guide](https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html) explains how to set environment variables in Windows, MacOS, Linux.
+
 
 ### How to reproduce the results of the paper
 
@@ -30,4 +30,4 @@ The Mathematica folder contains the mathematica notebook that shows how the rela
 
 The strong_lensing_data folder contains the pickled python function that returns the 2D likelihood function from Gilman et al. 202 used in the analysis; the python file strong_lensing_data_processing.py contains the functions to process this.
 
-the transfer_function folder contains the transfer functions for the Higgs decay model from Petraki & Kusenki 2008 (PK) and the GUT scale scenario from Kusenki et al 2010 (KTY), as obtained by Abazajian & Kusenko 2019. The python script transfer_functions.py has the functions to process these.
+the transfer_function folder contains the transfer functions for the Higgs decay model from [Petraki & Kusenko 2008 (PK)][https://ui.adsabs.harvard.edu/abs/2008PhRvD..77f5014P/abstract] and the GUT scale scenario from [Kusenko et al 2010 (KTY)](https://ui.adsabs.harvard.edu/abs/2010PhLB..693..144K/abstract), as obtained by [Abazajian & Kusenko 2019](https://arxiv.org/abs/1907.11696). The python script transfer_functions.py has the functions to process these.
