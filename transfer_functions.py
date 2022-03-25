@@ -3,17 +3,9 @@ from __future__ import division,print_function
 import os
 import sys
 
-from configparser import ConfigParser                  ### For parsing the configuration file
-import csv
-import h5py
-import healpy as hp
-import pandas as pd
-import matplotlib as mpl             ### For plotting options
 import matplotlib.pyplot as plt
 import numpy as np
-import pprint
 from scipy.optimize import curve_fit
-import time
 
 DARK_MATTER_PAPER_LOCATION=os.environ["DARK_MATTER_PAPER_LOCATION"]
 DARK_MATTER_CODE_LOCATION = os.environ["DARK_MATTER_CODE_LOCATION"]
@@ -21,8 +13,6 @@ sys.path.insert(0, DARK_MATTER_CODE_LOCATION)
 
 import model_utils
 import plot_utils
-
-
 
 
 class TransferFunctions():
