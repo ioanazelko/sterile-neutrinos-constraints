@@ -1,6 +1,6 @@
 # How to use the sterile-neutrinos-constraints repository
 This repository complements the paper "Constraints on sterile neutrino models from strong gravitational lensing, Milky Way
-satellites, and Lyman - α forest", by Zelko et al 2022 (currently in the journal review stage)
+satellites, and Lyman - α forest", by Zelko et al 2022 (currently in the journal review stage).
 
 ### Library Requirenments
 
