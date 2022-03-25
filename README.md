@@ -24,7 +24,7 @@ This [guide](https://www.twilio.com/blog/2017/01/how-to-set-environment-variable
 
 ### How to reproduce the results of the paper
 
-Please see the paper_analysis.pybn notebook to see how the paper results are obtained.
+Please see the **paper_analysis.ipynb** notebook to see how the paper results are obtained.
 
 The Mathematica folder contains the mathematica notebook that shows how the relations in the Appendix are obtained.
 
