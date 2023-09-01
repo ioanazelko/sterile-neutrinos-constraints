@@ -57,6 +57,30 @@ def colorblind_color_dict_15():
 
 
 
+def plot_colordict():
+    """
+    Function to be used to visualize the choice of colors
+    that work for all colorblind types
+    """
+    c_dict = colorblind_color_dict_15()
+    fig, ax =plt.subplots(figsize=(12,8))
+    linewidth=8
+    ax.plot(np.array(range(10)),c=c_dict["cb_black"], label="black", linewidth=linewidth)
+    ax.plot(np.array(range(10))+1,c=c_dict["cb_dark_green"], label="dark_green", linewidth=linewidth)
+    ax.plot(np.array(range(10))+2,c=c_dict["cb_blue_green"], label="blue_green", linewidth=linewidth)
+    ax.plot(np.array(range(10))+3,c=c_dict["cb_blue"], label="blue", linewidth=linewidth)
+    ax.plot(np.array(range(10))+4,c=c_dict["cb_medium_blue"], label="medium_blue", linewidth=linewidth)
+    ax.plot(np.array(range(10))+5,c=c_dict["cb_light_blue"], label="light_blue", linewidth=linewidth)
+    ax.plot(np.array(range(10))+6,c=c_dict["cb_bright_pink"], label="bright_pink", linewidth=linewidth)
+    ax.plot(np.array(range(10))+7,c=c_dict["cb_light_pink"], label="light_pink", linewidth=linewidth)
+    ax.plot(np.array(range(10))+8,c=c_dict["cb_magenta"], label="magenta", linewidth=linewidth)
+    ax.plot(np.array(range(10))+9,c=c_dict["cb_purple"], label="purple", linewidth=linewidth)
+    ax.plot(np.array(range(10))+10,c=c_dict["cb_red"], label="red", linewidth=linewidth)
+    ax.plot(np.array(range(10))+11,c=c_dict["cb_brown"], label="brown", linewidth=linewidth)
+    ax.plot(np.array(range(10))+12,c=c_dict["cb_orange"], label="orange", linewidth=linewidth)
+    ax.plot(np.array(range(10))+13,c=c_dict["cb_bright_green"], label="bright_green", linewidth=linewidth)
+    ax.plot(np.array(range(10))+14,c=c_dict["cb_yellow"], label="yellow", linewidth=linewidth)
+    ax.legend(loc="lower right", fontsize=15)
 
 def colorblind_color_list():
     blue = '#377eb8'

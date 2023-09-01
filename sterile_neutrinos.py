@@ -169,7 +169,7 @@ def calculate_DW(m_hm,p_m_hm):
     return 
 
 
-def plot_all_sn(m_hm,p_m_hm,t1,t2):
+def plot_all_sn(m_hm,p_m_hm,t1,t2, paper_plot=False):
 
     """
     Makes the plots of the posteriors of the PL, KTY, and DW 
@@ -186,7 +186,7 @@ def plot_all_sn(m_hm,p_m_hm,t1,t2):
     
     fontsize=8
     plot_utils.set_plot_options(fontsize=fontsize)
-    fig, ax = plt.subplots(figsize=(3.6, 3.))
+    fig, ax = plt.subplots(figsize=(3.6, 2.8))
     
     
     poly_dict_thWDM_to_sn1, poly_dict_sn_to_thWDM1 =t1.fit_polynomials()
@@ -196,6 +196,7 @@ def plot_all_sn(m_hm,p_m_hm,t1,t2):
     m_sn_list1, p_sn_list1, sn_lower_limit_list1 = run_sn_all_cases(m_hm,p_m_hm,poly_dict_thWDM_to_sn1)
     m_sn_list2, p_sn_list2, sn_lower_limit_list2= run_sn_all_cases(m_hm,p_m_hm,poly_dict_thWDM_to_sn2)
     
+    ### Plot model KTY and PK
 
     ax.plot(m_sn_list2[0], p_sn_list2[0],color=color_dict["cb_magenta"],label="KTY-I")
     ax.axvline(x=sn_lower_limit_list2[0], color=color_dict["cb_magenta"],linestyle='--')
@@ -206,7 +207,7 @@ def plot_all_sn(m_hm,p_m_hm,t1,t2):
     ax.plot(m_sn_list1[1], p_sn_list1[1],color=color_dict["cb_light_blue"],label="PK-II")
     ax.axvline(x=sn_lower_limit_list1[1], color=color_dict["cb_light_blue"],linestyle='--')
 
-  
+   ### Plot the DW model
     for i in range(2):
         case = case_list[i]
         label=label_list[i]
@@ -224,6 +225,8 @@ def plot_all_sn(m_hm,p_m_hm,t1,t2):
     ax.set_xlim([1E-2,1E3])
     ax.legend(loc="upper left",handlelength =1,fontsize=fontsize)
     plt.tight_layout()
+    if paper_plot == True:
+        fig.savefig(DARK_MATTER_PAPER_LOCATION+"/m_sn_p_norm_log_single.pdf",bbox_inches = 'tight',pad_inches = 0.01)
     return
 
 
