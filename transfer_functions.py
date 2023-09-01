@@ -5,6 +5,7 @@ import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy import interpolate
 from scipy.optimize import curve_fit
 
 DARK_MATTER_PAPER_LOCATION=os.environ["DARK_MATTER_PAPER_LOCATION"]
@@ -16,7 +17,7 @@ import plot_utils
 
 
 class TransferFunctions():
-    def __init__(self, cosmo_constants_type, transfer_function_type,th_WDM_model_type):
+    def __init__(self, cosmo_constants_type, transfer_function_type,th_WDM_model_type, sn_thWDM_relation):
         
         ### Choosing between Bode and Viel for the thermal WDM formula fit
         self.th_WDM_model_type=th_WDM_model_type
@@ -27,6 +28,9 @@ class TransferFunctions():
             self.H_0, self.Omega_baryon, self.Omega_Matter, self.Omega_Lambda, self.T_cmb, self.h = model_utils.cosmo_param_Kev_2021()
         else:
             raise ValueError("The cosmological constants type is not valid")
+        ### Choosing how to make the connection between the thWDM transfer function and sterile neutrinos:
+        ### either through a fit of the analytical form ("function_fit"), or through matching the half-mode ("half_mode") of the two
+        self.sn_thWDM_relation = sn_thWDM_relation 
         ################################################################################
         ### Loading up the transfer functions data according to the the choice of models
         ################################################################################
@@ -67,8 +71,8 @@ class TransferFunctions():
                 wavenumber_g = wavenumber*self.h #[1/Mpc], the units Galacticus uses
                 transfer_f = loaded.T[1]
                 self.transfer_functions[energy] = {}
-                self.transfer_functions[energy]['wavenumber_g'] = wavenumber_g
-                self.transfer_functions[energy]['wavenumber'] = wavenumber
+                self.transfer_functions[energy]['wavenumber_g'] = wavenumber_g # Galacticus units[1/Mpc]
+                self.transfer_functions[energy]['wavenumber'] = wavenumber # paper units[h/Mpc]
                 self.transfer_functions[energy]['transfer_f'] = transfer_f
 
         else:
@@ -124,17 +128,25 @@ class TransferFunctions():
         Omega_X =self.Omega_Matter-self.Omega_baryon
         return model_utils.T_WDM(Omega_X,self.h,m_X,k,self.th_WDM_model_type)
     
-    def fit_sn_with_WDM(self,paper_plot=False):
+    def fit_sn_with_WDM(self,paper_plot=False, plot_large=True):
         """
         Fitting the sterile neutrinos transfer functions from 
         with the WDM transfer functions analytical formulas from Bode et al. (2001), eq. A9 
         """
         ### Set the fontsize for the plot and the general properties
-        plot_utils.set_plot_options(fontsize=17)
-        full_fig, full_ax = plt.subplots(figsize=(14, 7))
+        if plot_large == True:
+            fontsize=17
+            linewidth =2 
+
+            full_fig, full_ax = plt.subplots(figsize=(14, 7))
+        else:
+            fontsize=8
+            linewidth=1
+            full_fig, full_ax = plt.subplots(figsize=(3.6, 2.6))
         ### Get the colorblind colors
         #color_list =plot_utils.colorblind_color_list()[0]
         color_list =plot_utils.colorblind_color_list_15()
+        plot_utils.set_plot_options(fontsize=fontsize)
 
 
         ### Index over energy and fit for the WDM mass
@@ -146,36 +158,57 @@ class TransferFunctions():
             color = color_list[energy_index]
             wavenumber = self.transfer_functions[energy]['wavenumber']#[h/Mpc], the units the Bode et al. paper uses
             transfer_f = self.transfer_functions[energy]['transfer_f']
-            full_ax.plot(wavenumber,transfer_f,label="sterile neutrino "+energy_label,c=color)
+            if plot_large ==True:
+                label = "sterile neutrino "+energy_label
+            else:
+                label = "sn "+energy_label
+            full_ax.plot(wavenumber,transfer_f,label=label,c=color, linewidth=linewidth)
 
-            # choose the input and output variables
-            x, y = wavenumber, transfer_f
-            # curve fit
-            popt = curve_fit(self.objective, x, y)
-            # summarize the parameter values
-            m_WDM= popt[0][0]
-            error = popt[1][0]
+            if self.sn_thWDM_relation == "function_fit":
+                # choose the input and output variables
+                x, y = wavenumber, transfer_f
+                # curve fit
+                popt = curve_fit(self.objective, x, y)
+                # summarize the parameter values
+                m_WDM= popt[0][0]
+                error = popt[1][0]
+                print('m_thWDM = %.5f keV +/- %.5e keV' % (m_WDM, error))
+
+            elif self.sn_thWDM_relation == "half_mode":
+                #### Find the half-mode of the sterile neutrino transfer function
+                k_vs_T = interpolate.interp1d(transfer_f,wavenumber)
+                k_hm= k_vs_T(0.5)
+                #### Find the wdm mass which gives the wdm transfer function with the same half-mode
+                Omega_X =self.Omega_Matter-self.Omega_baryon
+                m_WDM = model_utils.m_WDM_from_k_hm(k_hm, Omega_X,self.h,self.th_WDM_model_type)
+            else:
+                raise ValueError("Please specify how the connection beteen sterile neutriino and WDM shhould be made")
+
+
+
             T_wdm = self.objective(wavenumber, m_WDM)
-            print('m_thWDM = %.5f keV +/- %.5e keV' % (m_WDM, error))
             #print("{:.2f}".format(m_WDM))
             print(m_WDM)
             sn_en.append(energy)
             wdm_en.append(m_WDM)
-            full_ax.plot(wavenumber,T_wdm,label='thWDM '+"{:.2f}".format(m_WDM)+' keV',c=color, linestyle='--')
+            full_ax.plot(wavenumber,T_wdm,label='thWDM '+"{:.1f}".format(m_WDM)+'keV',c=color, linestyle='--',linewidth=linewidth)
 
 
         full_ax.set_xscale('log')
         full_ax.set_yscale('log')
-        full_ax.legend(loc='lower left')
-        full_ax.set_ylabel(r"$T_s(k)$")
+        if plot_large == True:
+            full_ax.legend(loc='lower left')
+        else:
+            full_ax.legend(loc='lower left', fontsize=fontsize-2, frameon=False)
+        full_ax.set_ylabel(r"$T_s(k)$",labelpad=-10)
         full_ax.set_xlabel(r"k[h $ \textrm{Mpc}^{-1}$]")
         full_ax.set_xlim([1E-1,1E3])
         full_ax.set_ylim([0.05,1])    
         plt.tight_layout()
 
         if paper_plot == True:
-            full_fig.savefig(DARK_MATTER_PAPER_LOCATION+"/transfer_functions_WDM_fit.pdf",bbox_inches = 'tight',pad_inches = 0.01)
-            
+            full_fig.savefig(DARK_MATTER_PAPER_LOCATION+"/transfer_functions_WDM_fit.pdf",bbox_inches = 'tight',pad_inches = 0.02)
+
 
         self.sn_en = sn_en
         self.wdm_en = wdm_en
@@ -260,7 +293,7 @@ def plot_sn_vs_wdm_overlay(t1, t2,paper_plot=False):
     Plot the first 2 degree polynomials and the power law
     """
     ### Set the fontsize for the plot and the general properties
-    plot_utils.set_plot_options(fontsize=10)
+    plot_utils.set_plot_options(fontsize=8)
     ### Get the colorblind colors
     color_dict =plot_utils.colorblind_color_dict_15()
     
